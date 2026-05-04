@@ -1,0 +1,11 @@
+name: Android Build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: No Gradle Found
+        run: echo "Apke project mein gradlew file nahi mili, isliye hum sirf files check kar rahe hain."
+
