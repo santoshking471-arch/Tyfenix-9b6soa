@@ -10,6 +10,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTheme } from '@/hooks/useTheme';
 import { useCart } from '@/hooks/useCart';
 import { fetchProducts, fetchCategories, Product, Category } from '@/services/productService';
+import { AdBanner } from '@/components/ads';
 import { BorderRadius, FontSize, FontWeight, Shadow } from '@/constants/theme';
 import { StatusBar } from 'expo-status-bar';
 
@@ -171,6 +172,7 @@ export default function ProductListingScreen() {
               <Text style={{ color: colors.textMuted, marginTop: 16, fontSize: FontSize.lg }}>No products found</Text>
             </View>
           )}
+          ListHeaderComponent={() => <AdBanner size="banner" />}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={[s.card, { backgroundColor: colors.card }]}

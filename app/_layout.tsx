@@ -5,8 +5,28 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { CartProvider } from '@/contexts/CartContext';
 import { WishlistProvider } from '@/contexts/WishlistContext';
+import { useEffect } from 'react';
+
+// Initialize AdMob SDK (only in APK/native build, safely ignored in preview)
+function initAdMob() {
+  try {
+    const mobileAds = require('react-native-google-mobile-ads').default;
+    mobileAds().initialize().then(() => {
+      console.log('AdMob initialized');
+      // Preload interstitial
+      const { preloadInterstitialAd } = require('@/components/ads');
+      preloadInterstitialAd();
+    });
+  } catch (e) {
+    // AdMob not available in preview/Expo Go — skip silently
+  }
+}
 
 export default function RootLayout() {
+  useEffect(() => {
+    initAdMob();
+  }, []);
+
   return (
     <AlertProvider>
       <SafeAreaProvider>

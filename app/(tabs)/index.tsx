@@ -11,6 +11,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { fetchProducts, fetchCategories, Product, Category } from '@/services/productService';
+import { AdBanner } from '@/components/ads';
 import { BorderRadius, FontSize, FontWeight, Shadow } from '@/constants/theme';
 import { StatusBar } from 'expo-status-bar';
 
@@ -143,6 +144,9 @@ export default function HomeScreen() {
             </View>
           </View>
 
+          {/* Ad Banner - Top */}
+          <AdBanner size="banner" style={{ marginTop: 12 }} />
+
           {/* Quick Stats */}
           <View style={s.quickStats}>
             {[
@@ -208,6 +212,9 @@ export default function HomeScreen() {
               />
             </>
           )}
+
+          {/* Ad Banner - Mid */}
+          <AdBanner size="large" />
 
           {/* Recommended */}
           {recommended.length > 0 && (
