@@ -13,7 +13,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { fetchProducts, fetchCategories, Product, Category } from '@/services/productService';
 import { BorderRadius, FontSize, FontWeight, Shadow } from '@/constants/theme';
 import { StatusBar } from 'expo-status-bar';
-import { AdBanner } from '@/components/AdBanner';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const BANNER_HEIGHT = 180;
@@ -78,11 +77,7 @@ export default function HomeScreen() {
         <View style={s.headerTop}>
           <View>
             <Text style={s.greeting}>Good {getTimeGreeting()}, {user?.name?.split(' ')[0] || 'Guest'} 👋</Text>
-            <Image
-            source={require('@/assets/images/tyfenix-logo.png')}
-            style={{ width: 110, height: 36 }}
-            contentFit="contain"
-          />
+            <Text style={s.brandName}>Tyfenix</Text>
           </View>
           <View style={s.headerActions}>
             <TouchableOpacity style={s.iconBtn}>
@@ -213,9 +208,6 @@ export default function HomeScreen() {
               />
             </>
           )}
-
-          {/* Ad Banner */}
-          <AdBanner style={{ marginHorizontal: 16, marginTop: 20, borderRadius: 12, overflow: 'hidden' }} />
 
           {/* Recommended */}
           {recommended.length > 0 && (

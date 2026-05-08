@@ -14,7 +14,6 @@ import { useAlert } from '@/template';
 import { fetchProductById, Product } from '@/services/productService';
 import { BorderRadius, FontSize, FontWeight, Shadow } from '@/constants/theme';
 import { StatusBar } from 'expo-status-bar';
-import { AdInterstitial } from '@/components/AdBanner';
 
 const { width: W } = Dimensions.get('window');
 
@@ -33,8 +32,6 @@ export default function ProductDetailScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [product, setProduct] = useState<Product | null>(null);
   const [productLoading, setProductLoading] = useState(true);
-  const [showAd, setShowAd] = useState(false);
-  const [pendingAction, setPendingAction] = useState<'cart' | 'buy' | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -65,27 +62,13 @@ export default function ProductDetailScreen() {
   const inCartQty = getQuantity(product.id);
   const wishlisted = isWishlisted(product.id);
 
-  const triggerAdThenAction = (action: 'cart' | 'buy') => {
-    setPendingAction(action);
-    setShowAd(true);
+  const handleAddToCart = () => {
+    addToCart(product, qty);
+    showAlert('Added to Cart', `${product.name} added to your cart!`, [
+      { text: 'Continue', style: 'cancel' },
+      { text: 'Go to Cart', onPress: () => router.push('/cart' as any) },
+    ]);
   };
-
-  const handleAdClose = () => {
-    setShowAd(false);
-    if (pendingAction === 'cart') {
-      addToCart(product!, qty);
-      showAlert('Added to Cart', `${product!.name} added to your cart!`, [
-        { text: 'Continue', style: 'cancel' },
-        { text: 'Go to Cart', onPress: () => router.push('/cart' as any) },
-      ]);
-    } else if (pendingAction === 'buy') {
-      addToCart(product!, qty);
-      router.push('/checkout' as any);
-    }
-    setPendingAction(null);
-  };
-
-  const handleAddToCart = () => triggerAdThenAction('cart');
 
   const s = styles(colors);
 
@@ -247,13 +230,15 @@ export default function ProductDetailScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={[s.buyBtn, { backgroundColor: colors.primary }]}
-          onPress={() => triggerAdThenAction('buy')}
+          onPress={() => {
+            addToCart(product, qty);
+            router.push('/checkout' as any);
+          }}
         >
           <MaterialIcons name="flash-on" size={20} color="#fff" />
           <Text style={s.buyBtnText}>Buy Now</Text>
         </TouchableOpacity>
       </View>
-      <AdInterstitial visible={showAd} onClose={handleAdClose} />
     </View>
   );
 }
